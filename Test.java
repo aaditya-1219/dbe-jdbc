@@ -6,12 +6,14 @@ class Test {
     void display(Connection con, Statement st) throws SQLException {
         String query = "select * from Student"; // query to be run
         ResultSet rs = st.executeQuery(query); // execute query
-
+        System.out.println();
         while (rs.next()) {
             String name = rs.getString("Name");
-            System.out.println(name);
+            int age = rs.getInt("age");
+            int score = rs.getInt("Score");
+            System.out.println(name + "\t" + age + "\t" + score);
         }
-        
+        System.out.println();
         // Close the ResultSet
         rs.close();
     }
@@ -45,10 +47,29 @@ class Test {
         preparedStatement.close();
     }
 
+    void delete(Connection con, Statement st) throws SQLException {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter name of record to be deleted: ");
+        String name = sc.nextLine();
+    
+        String deleteQuery = "DELETE FROM Student WHERE Name = ?"; 
+        PreparedStatement preparedStatement = con.prepareStatement(deleteQuery);
+        preparedStatement.setString(1, name);
+    
+        int rowsAffected = preparedStatement.executeUpdate();
+        if (rowsAffected > 0) {
+            System.out.println("Data deleted successfully.");
+        } else {
+            System.out.println("Data deletion failed. No matching record found.");
+        }
+    
+        preparedStatement.close();
+    }
+
     public static void main(String[] args) throws Exception {
         String url = "jdbc:mysql://localhost:3306/trig"; // Database URL
         String username = "root"; // MySQL username
-        String password = "sql123";
+        String password = "root";
 
         Class.forName("com.mysql.cj.jdbc.Driver"); // Driver name
         Connection con = DriverManager.getConnection(url, username, password);
@@ -57,9 +78,34 @@ class Test {
         Statement st = con.createStatement();
 
         Test t = new Test();
-        t.display(con, st);
-		t.insert(con, st);
-		t.display(con, st);
+
+        Scanner sc = new Scanner(System.in);
+        Boolean loop = true;
+        while(loop){
+            System.out.println("Enter choice:");
+            int choice;
+            System.out.println("1. Display: ");
+            System.out.println("2. Insert: ");
+            System.out.println("3. Delete: ");
+            System.out.println("0. Exit: ");
+            choice = sc.nextInt();
+            switch (choice) {
+                case 1:
+                    t.display(con, st);
+                    break;
+                case 2:
+                    t.insert(con, st);
+                    break;
+                case 3:
+                    t.delete(con, st);
+                    break;
+                case 0:
+                    loop = false;
+                    break;
+                default:
+                    break;
+            }
+        }
 
         // Close resources
         st.close();
