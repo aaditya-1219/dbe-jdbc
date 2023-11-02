@@ -1,0 +1,19 @@
+{
+  "name": "dbe-jdbc",
+  "version": "1.0.0",
+  "description": "Download the mysql connector from \"https://dev.mysql.com/downloads/connector/j/\" Extract the files Copy the mysql-connector-j-8.2.0.jar file into your working directory Compile file test.java using \"javac test.java\" Execute using \"java -cp :mysql-connector-j-8.2.0.jar test\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "mongodb": "^6.2.0",
+    "mongoose": "^8.0.0",
+    "nodemon": "^3.0.1"
+  }
+}
